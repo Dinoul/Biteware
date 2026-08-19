@@ -1,285 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>biteware</title>
-<link rel="stylesheet" href="style.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300;400;500;600;700&family=Bebas+Neue&family=Pacifico&family=Press+Start+2P&family=Orbitron:wght@400;700;900&family=Lobster&family=Caveat:wght@400;700&family=Righteous&family=Cinzel:wght@400;700;900&family=Anton&family=Dancing+Script:wght@400;700&family=Monoton&family=Saira+Stencil+One&family=Audiowide&family=Permanent+Marker&family=Sacramento&family=Russo+One&family=Bungee&family=Bungee+Shade&family=Creepster&family=Major+Mono+Display&family=VT323&family=Passion+One:wght@400;700;900&family=Satisfy&family=Fredoka:wght@300;400;500;600;700&family=Bowlby+One&family=Finger+Paint&family=Black+Ops+One&family=Megrim&family=Wallpoet&family=Rubik+Glitch&family=Special+Elite&family=Iceberg&family=Mina:wght@400;700&family=Sixtyfour&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>biteware</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 </head>
 <body>
 
-<canvas id="fx-canvas"></canvas>
-<div class="bg-gradient" id="bgGradient"></div>
-<div class="bg-noise" id="bgNoise"></div>
+    <canvas id="bg-canvas"></canvas>
+    <div id="overlay"></div>
+    <div id="particles"></div>
 
-<!-- ============ AUTH VIEW ============ -->
-<div id="view-auth" class="view view-auth">
-  <div class="auth-card">
-    <h1 class="auth-logo">biteware</h1>
-    <div class="auth-tabs">
-      <button class="auth-tab active" data-tab="login">login</button>
-      <button class="auth-tab" data-tab="signup">sign up</button>
-    </div>
-    <form id="loginForm" class="auth-form">
-      <input type="text" id="loginUser" class="auth-input" placeholder="username" autocomplete="username" required>
-      <div class="password-wrap">
-        <input type="password" id="loginPass" class="auth-input" placeholder="password" autocomplete="current-password" required>
-        <button type="button" class="password-toggle" data-target="loginPass"><i class="fa-solid fa-eye"></i></button>
-      </div>
-      <p class="auth-error" id="loginError"></p>
-      <button type="submit" class="auth-submit">login <i class="fa-solid fa-arrow-right"></i></button>
-    </form>
-    <form id="signupForm" class="auth-form hidden">
-      <input type="text" id="signupUser" class="auth-input" placeholder="choose a username" autocomplete="username" required>
-      <div class="password-wrap">
-        <input type="password" id="signupPass" class="auth-input" placeholder="password" autocomplete="new-password" required>
-        <button type="button" class="password-toggle" data-target="signupPass"><i class="fa-solid fa-eye"></i></button>
-      </div>
-      <div class="password-wrap">
-        <input type="password" id="signupPass2" class="auth-input" placeholder="confirm password" autocomplete="new-password" required>
-        <button type="button" class="password-toggle" data-target="signupPass2"><i class="fa-solid fa-eye"></i></button>
-      </div>
-      <p class="auth-error" id="signupError"></p>
-      <button type="submit" class="auth-submit">create account <i class="fa-solid fa-arrow-right"></i></button>
-    </form>
-  </div>
-</div>
-
-<!-- ============ DASHBOARD VIEW ============ -->
-<div id="view-dashboard" class="view view-dashboard hidden">
-  <div class="dash-topbar">
-    <div class="dash-brand">biteware</div>
-    <div class="dash-actions">
-      <button class="dash-btn" id="previewBtn"><i class="fa-solid fa-eye"></i> preview</button>
-      <button class="dash-btn" id="copyLinkBtn"><i class="fa-solid fa-link"></i> copy link</button>
-      <button class="dash-btn dash-btn-danger" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> logout</button>
-    </div>
-  </div>
-
-  <div class="dash-body">
-    <div class="dash-sidebar">
-      <div class="dash-tabs">
-        <button class="dash-tab active" data-tab="profile"><i class="fa-solid fa-user"></i></button>
-        <button class="dash-tab" data-tab="colors"><i class="fa-solid fa-palette"></i></button>
-        <button class="dash-tab" data-tab="effects"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
-        <button class="dash-tab" data-tab="fonts"><i class="fa-solid fa-font"></i></button>
-        <button class="dash-tab" data-tab="links"><i class="fa-solid fa-link"></i></button>
-        <button class="dash-tab" data-tab="badges"><i class="fa-solid fa-medal"></i></button>
-      </div>
-
-      <div class="dash-scroll">
-
-        <!-- ===== PROFILE TAB ===== -->
-        <div class="dash-tab-content active" data-tab-content="profile">
-          <label class="dash-label">account <i class="fa-solid fa-lock" style="font-size:0.6rem;"></i></label>
-          <input type="text" id="setAccountName" class="dash-input dash-input-locked" disabled>
-          <label class="dash-label">avatar</label>
-          <div class="file-upload-row">
-            <input type="text" id="setAvatar" class="dash-input" placeholder="image url...">
-            <label class="file-upload-btn" title="upload file">
-              <i class="fa-solid fa-upload"></i>
-              <input type="file" id="avatarFile" accept="image/*,image/gif" hidden>
-            </label>
-          </div>
-          <label class="dash-label">display name <i class="fa-solid fa-lock" style="font-size:0.6rem;"></i></label>
-          <input type="text" id="setUsername" class="dash-input dash-input-locked" disabled>
-          <label class="dash-label">username <i class="fa-solid fa-lock" style="font-size:0.6rem;"></i></label>
-          <input type="text" id="setNickname" class="dash-input dash-input-locked" disabled>
-          <label class="dash-label">bio</label>
-          <input type="text" id="setBio" class="dash-input" placeholder="welcome to my page">
-          <label class="dash-label">music</label>
-          <div class="file-upload-row">
-            <input type="text" id="setMusic" class="dash-input" placeholder="audio url...">
-            <label class="file-upload-btn" title="upload file">
-              <i class="fa-solid fa-upload"></i>
-              <input type="file" id="musicFile" accept="audio/*" hidden>
-            </label>
-          </div>
-
-          <div class="discord-link-section" id="discordLinkSection">
-            <label class="dash-label" style="margin-top:20px;">discord verification</label>
-            <p style="font-size:0.65rem;color:var(--text-muted);margin-bottom:10px;line-height:1.5;">
-              enter your discord id to verify server membership & unlock badges.
-              <br>get your id: discord settings → advanced → enable developer mode → right-click your profile → copy id
-            </p>
-            <div class="file-upload-row">
-              <input type="text" id="discordIdInput" class="dash-input" placeholder="discord id (numbers)">
-              <button class="discord-verify-btn" id="discordVerifyBtn">verify</button>
+    <!-- Entry Screen -->
+    <div id="entry-screen">
+        <div class="entry-content">
+            <h1>biteware</h1>
+            <div class="click-to-enter">
+                <span>Click anywhere to enter</span>
             </div>
-            <div class="discord-status" id="discordStatus"></div>
-          </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div id="main-container">
+        <div class="header">
+            <div class="brand">biteware</div>
+            <div class="nav-links">
+                <!-- Navigation controls -->
+            </div>
         </div>
 
-        <!-- ===== COLORS TAB ===== -->
-        <div class="dash-tab-content" data-tab-content="colors">
-          <label class="dash-label">background image (optional)</label>
-          <div class="file-upload-row">
-            <input type="text" id="setBgImage" class="dash-input" placeholder="image url or upload...">
-            <label class="file-upload-btn" title="upload file">
-              <i class="fa-solid fa-upload"></i>
-              <input type="file" id="bgImageFile" accept="image/*,image/gif" hidden>
-            </label>
-          </div>
-          <button class="clear-bg-btn" id="clearBgImage">clear background image</button>
-          <div class="color-grid" style="margin-top:16px;">
-            <div class="color-item">
-              <label class="dash-label">background</label>
-              <input type="color" id="setBgColor" class="color-picker">
+        <div class="content-wrapper">
+            <div class="sidebar">
+                <div class="user-section">
+                    <!-- User Profile & Discord Verification -->
+                    <div class="discord-verify">
+                        <p>
+                            enter your discord id to verify server membership &amp; unlock badges.
+                            <br>get your id: discord settings → advanced → enable developer mode → right-click your profile → copy id
+                        </p>
+                        <div class="input-group">
+                            <input type="text" placeholder="Enter Discord ID" id="discord-id-input">
+                            <button id="verify-btn">Verify</button>
+                        </div>
+                    </div>
+
+                    <!-- Customization Options -->
+                    <div class="options-group">
+                        <label for="theme-select">Theme</label>
+                        <select id="theme-select"></select>
+
+                        <label for="font-select">Font</label>
+                        <select id="font-select"></select>
+
+                        <label for="effect-select">Effects</label>
+                        <select id="effect-select"></select>
+                    </div>
+
+                    <div class="badges-info">
+                        <p>
+                            locked badges are shown in black &amp; white.<br>
+                            unlock them by earning achievements in the Discord server.
+                        </p>
+                    </div>
+                </div>
             </div>
-            <div class="color-item">
-              <label class="dash-label">card bg</label>
-              <input type="color" id="setCardBg" class="color-picker">
+
+            <!-- Profile Live Preview -->
+            <div class="preview-container">
+                <div class="preview-header">
+                    <i></i> live preview
+                </div>
+                <div class="card-preview">
+                    <div class="card-banner"></div>
+                    <div class="card-avatar">
+                        <img id="preview-pfp" alt="pfp" src="">
+                    </div>
+                    <h1 id="preview-username"></h1>
+                    <p id="preview-bio"></p>
+                    <div id="preview-badges"></div>
+                    <div class="view-count"><i></i> <span>0</span> views</div>
+                </div>
             </div>
-            <div class="color-item">
-              <label class="dash-label">text</label>
-              <input type="color" id="setTextColor" class="color-picker">
-            </div>
-            <div class="color-item">
-              <label class="dash-label">text dim</label>
-              <input type="color" id="setTextDim" class="color-picker">
-            </div>
-            <div class="color-item">
-              <label class="dash-label">border</label>
-              <input type="color" id="setBorderColor" class="color-picker">
-            </div>
-            <div class="color-item">
-              <label class="dash-label">accent</label>
-              <input type="color" id="setAccentColor" class="color-picker">
-            </div>
-          </div>
-          <div class="color-row">
-            <label class="dash-label">card opacity: <span id="cardOpacityVal">72</span>%</label>
-            <input type="range" id="setCardOpacity" class="range-slider" min="0" max="100" value="72">
-          </div>
-          <div class="color-row">
-            <label class="dash-label">blur: <span id="blurVal">20</span>px</label>
-            <input type="range" id="setBlur" class="range-slider" min="0" max="40" value="20">
-          </div>
         </div>
-
-        <!-- ===== EFFECTS TAB ===== -->
-        <div class="dash-tab-content" data-tab-content="effects">
-          <label class="dash-label">background effect</label>
-          <div class="weather-grid" id="weatherGrid"></div>
-          <div class="toggle-row">
-            <label class="dash-label">ring animation</label>
-            <button class="toggle active" id="setRingAnim"></button>
-          </div>
-          <div class="toggle-row">
-            <label class="dash-label">typing animation</label>
-            <button class="toggle active" id="setTyping"></button>
-          </div>
-          <div class="toggle-row">
-            <label class="dash-label">noise overlay</label>
-            <button class="toggle active" id="setNoise"></button>
-          </div>
-          <div class="toggle-row">
-            <label class="dash-label">avatar grayscale</label>
-            <button class="toggle active" id="setGrayscale"></button>
-          </div>
-          <div class="toggle-row">
-            <label class="dash-label">typing cursor</label>
-            <button class="toggle active" id="setCursor"></button>
-          </div>
-          <div class="toggle-row">
-            <label class="dash-label">tilt on hover</label>
-            <button class="toggle active" id="setTilt"></button>
-          </div>
-          <div class="toggle-row">
-            <label class="dash-label">social glow</label>
-            <button class="toggle active" id="setSocialGlow"></button>
-          </div>
-        </div>
-
-        <!-- ===== FONTS TAB ===== -->
-        <div class="dash-tab-content" data-tab-content="fonts">
-          <label class="dash-label">display name font <i class="fa-solid fa-lock" style="font-size:0.6rem;"></i></label>
-          <select id="setUsernameFont" class="dash-select dash-input-locked" disabled></select>
-          <label class="dash-label">body font</label>
-          <select id="setBodyFont" class="dash-select"></select>
-          <label class="dash-label">display name animation <i class="fa-solid fa-lock" style="font-size:0.6rem;"></i></label>
-          <select id="setUsernameAnim" class="dash-select dash-input-locked" disabled></select>
-        </div>
-
-        <!-- ===== LINKS TAB ===== -->
-        <div class="dash-tab-content" data-tab-content="links">
-          <label class="dash-label" style="margin-bottom:12px;">your links</label>
-          <div class="added-links" id="addedLinks"></div>
-          <label class="dash-label" style="margin:20px 0 12px;">add a social</label>
-          <div class="social-grid" id="socialGrid"></div>
-        </div>
-
-        <!-- ===== BADGES TAB ===== -->
-        <div class="dash-tab-content" data-tab-content="badges">
-          <label class="dash-label" style="margin-bottom:12px;">badge collection</label>
-          <div class="badge-catalog" id="badgeCatalog"></div>
-          <p class="dash-label" style="opacity:0.4; text-align:center; margin-top:16px; line-height:1.6; font-size:0.65rem;">
-            locked badges are shown in black & white.<br>
-            unlock them by earning achievements in the Discord server.
-          </p>
-        </div>
-
-        <button class="reset-btn" id="resetBtn"><i class="fa-solid fa-rotate-left"></i> reset to defaults</button>
-
-      </div>
     </div>
 
-    <div class="dash-preview" id="dashPreview">
-      <div class="dash-preview-label"><i class="fa-solid fa-eye"></i> live preview</div>
-      <div class="dash-preview-card" id="previewCard">
-        <div class="preview-card-inner" id="previewCardInner"></div>
-      </div>
+    <!-- Add Social Modal -->
+    <div id="social-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Social</h2>
+            </div>
+            <div class="modal-body">
+                <div class="social-input">
+                    <div class="icon"><i></i></div>
+                    <input type="text" placeholder="Social Link">
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<!-- ============ PROFILE VIEW ============ -->
-<div id="view-profile" class="view view-profile hidden">
-  <button class="back-btn" id="backBtn"><i class="fa-solid fa-arrow-left"></i> back</button>
-  <div class="card" id="card">
-    <button class="music-btn" id="musicBtn" aria-label="Toggle music">
-      <i class="fa-solid fa-volume-xmark" id="musicIcon"></i>
-      <div class="music-bars" id="musicBars"><span></span><span></span><span></span><span></span></div>
-    </button>
-    <div class="avatar-wrap">
-      <div class="avatar-ring" id="avatarRing"></div>
-      <img class="avatar" id="avatar" src="" alt="pfp">
-    </div>
-    <h1 class="username" id="username"></h1>
-    <p class="nickname" id="nickname"></p>
-    <div class="badges" id="badges"></div>
-    <p class="bio" id="bio"></p>
-    <div class="views"><i class="fa-solid fa-eye"></i> <span id="viewCount">0</span> views</div>
-    <div class="links" id="links"></div>
-  </div>
-</div>
+    <audio id="bg-audio" loop preload="auto"></audio>
 
-<!-- ============ ADD LINK MODAL ============ -->
-<div id="linkModal" class="link-modal-overlay">
-  <div class="link-modal">
-    <div class="link-modal-header">
-      <h2 id="linkModalTitle">Add Social</h2>
-      <button class="link-modal-close" id="linkModalClose"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="link-modal-body">
-      <label class="dash-label">link</label>
-      <div class="link-input-wrap">
-        <div class="link-input-icon" id="linkInputIcon"><i class="fa-solid fa-link"></i></div>
-        <input type="text" id="linkInputUrl" class="link-modal-input" placeholder="https://...">
-      </div>
-      <button class="link-modal-add" id="linkModalAdd">add</button>
-    </div>
-  </div>
-</div>
-
-<div id="toast" class="toast"></div>
-<audio id="audio" loop preload="auto"></audio>
-
-<script src="effects.js"></script>
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
