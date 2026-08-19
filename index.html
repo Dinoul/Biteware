@@ -4,108 +4,188 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>biteware</title>
-    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #08080a;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+        }
+
+        .login-card {
+            background: #0f1013;
+            border: 1px solid #1c1e24;
+            border-radius: 16px;
+            padding: 32px 28px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .logo {
+            font-family: 'VT323', monospace;
+            font-size: 2.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            color: #ffffff;
+        }
+
+        .tab-group {
+            display: flex;
+            background: #15171c;
+            padding: 4px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #20232a;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 8px 0;
+            background: transparent;
+            border: none;
+            color: #8b929e;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: #22252e;
+            color: #ffffff;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .input-field {
+            position: relative;
+            width: 100%;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 12px 14px;
+            background: #15171c;
+            border: 1px solid #20232a;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .input-field input:focus {
+            border-color: #3b82f6;
+        }
+
+        .input-field input::placeholder {
+            color: #555a64;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #555a64;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 12px;
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: opacity 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+    </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
-    <div id="overlay"></div>
-    <div id="particles"></div>
+    <div class="login-card">
+        <h1 class="logo">biteware</h1>
 
-    <!-- Entry Screen -->
-    <div id="entry-screen">
-        <div class="entry-content">
-            <h1>biteware</h1>
-            <div class="click-to-enter">
-                <span>Click anywhere to enter</span>
-            </div>
+        <div class="tab-group">
+            <button class="tab-btn active" id="loginTab">login</button>
+            <button class="tab-btn" id="signupTab">sign up</button>
         </div>
+
+        <form id="authForm" onsubmit="event.preventDefault();">
+            <div class="input-group">
+                <div class="input-field">
+                    <input type="text" placeholder="username" required>
+                </div>
+                <div class="input-field">
+                    <input type="password" id="passwordInput" placeholder="password" required>
+                    <button type="button" class="toggle-password" id="togglePassword">👁</button>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <span>login</span> &rarr;
+            </button>
+        </form>
     </div>
 
-    <!-- Main Container -->
-    <div id="main-container">
-        <div class="header">
-            <div class="brand">biteware</div>
-            <div class="nav-links">
-                <!-- Navigation controls -->
-            </div>
-        </div>
+    <script>
+        const loginTab = document.getElementById('loginTab');
+        const signupTab = document.getElementById('signupTab');
+        const submitBtn = document.getElementById('submitBtn');
+        const passwordInput = document.getElementById('passwordInput');
+        const togglePassword = document.getElementById('togglePassword');
 
-        <div class="content-wrapper">
-            <div class="sidebar">
-                <div class="user-section">
-                    <!-- User Profile & Discord Verification -->
-                    <div class="discord-verify">
-                        <p>
-                            enter your discord id to verify server membership &amp; unlock badges.
-                            <br>get your id: discord settings → advanced → enable developer mode → right-click your profile → copy id
-                        </p>
-                        <div class="input-group">
-                            <input type="text" placeholder="Enter Discord ID" id="discord-id-input">
-                            <button id="verify-btn">Verify</button>
-                        </div>
-                    </div>
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('active');
+            signupTab.classList.remove('active');
+            submitBtn.querySelector('span').textContent = 'login';
+        });
 
-                    <!-- Customization Options -->
-                    <div class="options-group">
-                        <label for="theme-select">Theme</label>
-                        <select id="theme-select"></select>
+        signupTab.addEventListener('click', () => {
+            signupTab.classList.add('active');
+            loginTab.classList.remove('active');
+            submitBtn.querySelector('span').textContent = 'sign up';
+        });
 
-                        <label for="font-select">Font</label>
-                        <select id="font-select"></select>
-
-                        <label for="effect-select">Effects</label>
-                        <select id="effect-select"></select>
-                    </div>
-
-                    <div class="badges-info">
-                        <p>
-                            locked badges are shown in black &amp; white.<br>
-                            unlock them by earning achievements in the Discord server.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Profile Live Preview -->
-            <div class="preview-container">
-                <div class="preview-header">
-                    <i></i> live preview
-                </div>
-                <div class="card-preview">
-                    <div class="card-banner"></div>
-                    <div class="card-avatar">
-                        <img id="preview-pfp" alt="pfp" src="">
-                    </div>
-                    <h1 id="preview-username"></h1>
-                    <p id="preview-bio"></p>
-                    <div id="preview-badges"></div>
-                    <div class="view-count"><i></i> <span>0</span> views</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Social Modal -->
-    <div id="social-modal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Add Social</h2>
-            </div>
-            <div class="modal-body">
-                <div class="social-input">
-                    <div class="icon"><i></i></div>
-                    <input type="text" placeholder="Social Link">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <audio id="bg-audio" loop preload="auto"></audio>
-
-    <script src="script.js"></script>
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+        });
+    </script>
 </body>
 </html>
