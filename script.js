@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (this.x < -5) this.x = canvas.width + 5;
             if (this.x > canvas.width + 5) this.x = -5;
 
-            /* Mouse repulsion */
             if (mouse.x !== null) {
                 const dx = this.x - mouse.x;
                 const dy = this.y - mouse.y;
@@ -104,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     animateCursorRing();
 
-    /* Grow ring on interactive-element hover */
     document.querySelectorAll('a, button').forEach(el => {
         el.addEventListener('mouseenter', () => cursorRing.classList.add('hovering'));
         el.addEventListener('mouseleave', () => cursorRing.classList.remove('hovering'));
@@ -199,12 +197,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainContainer = document.getElementById('main-container');
     const maxTilt = 8;
 
-    // Bigger hitbox: listen on the whole window, tilt based on distance from card center
     document.addEventListener('mousemove', e => {
         const rect = bioCard.getBoundingClientRect();
         const cx = rect.left + rect.width / 2;
         const cy = rect.top + rect.height / 2;
-        // Use a larger effective radius (1.8x the card size) for a bigger hitbox
         const rangeX = rect.width * 0.9;
         const rangeY = rect.height * 0.9;
         const dx = e.clientX - cx;
