@@ -256,4 +256,18 @@ document.addEventListener('DOMContentLoaded', () => {
     applyConfig(savedConfig);
     if (savedConfig.bio) startTypewriter();
 
+    /* ── Disable right-click, inspect, and view source ─────────────── */
+    // Block right-click context menu
+    document.addEventListener('contextmenu', e => e.preventDefault());
+
+    // Block F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+Shift+C
+    document.addEventListener('keydown', e => {
+        if (e.code === 'F12' ||
+            (e.ctrlKey && e.shiftKey && (e.code === 'KeyI' || e.code === 'KeyJ' || e.code === 'KeyC')) ||
+            (e.ctrlKey && e.code === 'KeyU')) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
 });
