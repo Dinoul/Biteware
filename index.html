@@ -4,188 +4,97 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>biteware</title>
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif;
-        }
-
-        body {
-            background-color: #08080a;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #ffffff;
-        }
-
-        .login-card {
-            background: #0f1013;
-            border: 1px solid #1c1e24;
-            border-radius: 16px;
-            padding: 32px 28px;
-            width: 100%;
-            max-width: 380px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
-
-        .logo {
-            font-family: 'VT323', monospace;
-            font-size: 2.8rem;
-            letter-spacing: 2px;
-            margin-bottom: 24px;
-            color: #ffffff;
-        }
-
-        .tab-group {
-            display: flex;
-            background: #15171c;
-            padding: 4px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border: 1px solid #20232a;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 8px 0;
-            background: transparent;
-            border: none;
-            color: #8b929e;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .tab-btn.active {
-            background: #22252e;
-            color: #ffffff;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .input-field {
-            position: relative;
-            width: 100%;
-        }
-
-        .input-field input {
-            width: 100%;
-            padding: 12px 14px;
-            background: #15171c;
-            border: 1px solid #20232a;
-            border-radius: 8px;
-            color: #ffffff;
-            font-size: 0.9rem;
-            outline: none;
-            transition: border-color 0.2s ease;
-        }
-
-        .input-field input:focus {
-            border-color: #3b82f6;
-        }
-
-        .input-field input::placeholder {
-            color: #555a64;
-        }
-
-        .toggle-password {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #555a64;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 12px;
-            background: #ffffff;
-            color: #000000;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: opacity 0.2s ease;
-        }
-
-        .submit-btn:hover {
-            opacity: 0.9;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome (social icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="login-card">
-        <h1 class="logo">biteware</h1>
+    <!-- Particle Background -->
+    <canvas id="particles"></canvas>
 
-        <div class="tab-group">
-            <button class="tab-btn active" id="loginTab">login</button>
-            <button class="tab-btn" id="signupTab">sign up</button>
-        </div>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
 
-        <form id="authForm" onsubmit="event.preventDefault();">
-            <div class="input-group">
-                <div class="input-field">
-                    <input type="text" placeholder="username" required>
+    <!-- ═════════════════════════════════════════════════════════════
+         BIO CARD
+         ═════════════════════════════════════════════════════════════ -->
+    <div id="main-container">
+        <div class="bio-card">
+
+            <!-- ── Profile Picture ─────────────────────────────────── -->
+            <div class="avatar-wrapper">
+                <div class="avatar-ring"></div>
+                <!-- EDIT: Replace src with your profile picture URL or local file -->
+                <img src="https://api.dicebear.com/7.x/bottts/svg?seed=biteware" alt="avatar" class="avatar">
+            </div>
+
+            <!-- EDIT: Your username -->
+            <h1 class="username">AverageWade</h1>
+
+            <!-- EDIT: Your nickname / handle -->
+            <p class="nickname">Average</p>
+
+            <!-- EDIT: Your bio text (typewriter effect animates this) -->
+            <p class="bio" id="bio" data-text="• u can see all my socials from here •"></p>
+
+            <div class="divider"></div>
+
+            <!-- ═══════════════════════════════════════════════════════
+                 SOCIAL LINKS
+                 EDIT: Replace href="#" with your links
+                       Remove any <a> you don't need
+                 ═══════════════════════════════════════════════════════ -->
+            <div class="socials">
+                <a href="#" class="social-btn" title="YouTube"   target="_blank" rel="noopener noreferrer"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="social-btn" title="TikTok"    target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok"></i></a>
+                <a href="#" class="social-btn" title="GitHub"    target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-btn" title="Steam"     target="_blank" rel="noopener noreferrer"><i class="fab fa-steam"></i></a>
+            </div>
+
+            <!-- ═══════════════════════════════════════════════════════
+                 MUSIC PLAYER
+                 ═══════════════════════════════════════════════════════ -->
+            <div class="music-player">
+                <div class="music-left">
+                    <button class="play-btn" id="playBtn" aria-label="Play / pause music">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <div class="music-info">
+                        <!-- EDIT: Song title -->
+                        <span class="track-title">your song name</span>
+                        <!-- EDIT: Artist name -->
+                        <span class="track-artist">artist name</span>
+                    </div>
+                    <!-- Animated equalizer (visible when playing) -->
+                    <div class="equalizer" id="equalizer">
+                        <span class="eq-bar"></span>
+                        <span class="eq-bar"></span>
+                        <span class="eq-bar"></span>
+                        <span class="eq-bar"></span>
+                    </div>
                 </div>
-                <div class="input-field">
-                    <input type="password" id="passwordInput" placeholder="password" required>
-                    <button type="button" class="toggle-password" id="togglePassword">👁</button>
+                <div class="music-right">
+                    <span class="time" id="currentTime">0:00</span>
+                    <div class="progress-container" id="progressContainer">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                    <span class="time" id="durationTime">0:00</span>
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn" id="submitBtn">
-                <span>login</span> &rarr;
-            </button>
-        </form>
+            <!-- EDIT: Replace src with your music file URL (mp3, wav, etc.) -->
+            <audio id="audioPlayer" src="" preload="metadata"></audio>
+
+        </div>
     </div>
 
-    <script>
-        const loginTab = document.getElementById('loginTab');
-        const signupTab = document.getElementById('signupTab');
-        const submitBtn = document.getElementById('submitBtn');
-        const passwordInput = document.getElementById('passwordInput');
-        const togglePassword = document.getElementById('togglePassword');
-
-        loginTab.addEventListener('click', () => {
-            loginTab.classList.add('active');
-            signupTab.classList.remove('active');
-            submitBtn.querySelector('span').textContent = 'login';
-        });
-
-        signupTab.addEventListener('click', () => {
-            signupTab.classList.add('active');
-            loginTab.classList.remove('active');
-            submitBtn.querySelector('span').textContent = 'sign up';
-        });
-
-        togglePassword.addEventListener('click', () => {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
